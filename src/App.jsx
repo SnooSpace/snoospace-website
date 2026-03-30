@@ -22,10 +22,29 @@ function App() {
   const videoLayerRef = useRef(null);
   const landingVideoRef = useRef(null);
   const comingSoonTextRef = useRef(null);
+  const lenisRef = useRef(null);
 
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [isHoveringLanding, setIsHoveringLanding] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+
+  const startTextSequence = () => {
+    // Reset to initial state
+    gsap.set(comingSoonTextRef.current, {
+      y: 0,
+      backgroundImage: "linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.6) 100%)",
+      opacity: 1,
+    });
+
+    // Animate to end state after 5s
+    gsap.to(comingSoonTextRef.current, {
+      y: "15vh",
+      backgroundImage: "linear-gradient(135deg, #00E0FF 0%, #007BFF 100%)",
+      duration: 1.5,
+      delay: 5,
+      ease: "power2.inOut",
+    });
+  };
 
   const handlePlayVideo = () => {
     if (landingVideoRef.current) {
@@ -51,6 +70,12 @@ function App() {
     }
   };
 
+  const scrollToTop = () => {
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { duration: 1.5 });
+    }
+  };
+
   useEffect(() => {
     // 1. Lenis Smooth Scroll Setup
     const lenis = new Lenis({
@@ -58,6 +83,7 @@ function App() {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smooth: true,
     });
+    lenisRef.current = lenis;
 
     function raf(time) {
       lenis.raf(time);
@@ -105,14 +131,7 @@ function App() {
       .to(landingVideoRef.current, { opacity: 0, duration: 0.8 }, 0)
       .to(maskOverlayRef.current, { opacity: 1, duration: 0.8 }, 0.5);
 
-    // Mid-way Transition (5s): Move Coming Soon text lower & change to blue gradient
-    gsap.to(comingSoonTextRef.current, {
-      y: "15vh",
-      backgroundImage: "linear-gradient(135deg, #00E0FF 0%, #007BFF 100%)",
-      duration: 1.5,
-      delay: 5,
-      ease: "power2.inOut",
-    });
+    // Mid-way Transition (5s): This is now handled by startTextSequence triggered by video events
 
     // Stage 2 (0.2-9s): Cinematic Pullback Zoom OUT
     heroTl
@@ -177,7 +196,12 @@ function App() {
     <div className="app-container" ref={containerRef}>
       {/* Fixed Nav */}
       <nav className="global-nav">
-        <img src="/Icon_Dark.svg" alt="SnooSpace Icon" className="nav-logo" />
+        <img 
+          src="/Icon_Dark.svg" 
+          alt="SnooSpace Icon" 
+          className="nav-logo" 
+          onClick={scrollToTop}
+        />
         <ChartNoAxesGantt className="nav-icon" />
       </nav>
 
@@ -241,7 +265,12 @@ function App() {
                 autoPlay
                 muted
                 playsInline
-                onPlay={() => setIsVideoPlaying(true)}
+                onPlay={() => {
+                  setIsVideoPlaying(true);
+                  if (landingVideoRef.current.currentTime < 1) {
+                    startTextSequence();
+                  }
+                }}
                 onPause={() => setIsVideoPlaying(false)}
                 onEnded={() => setIsVideoPlaying(false)}
               />
