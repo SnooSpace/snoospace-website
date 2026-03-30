@@ -1,0 +1,109 @@
+/* index.css */
+:root {
+  --bg-color: #0b0b13;
+  --text-white: #ffffff;
+  --text-h2-color: #CEF2F2;
+  --text-h1-gradient: linear-gradient(135deg, #00C6FF, #0072FF);
+
+  /* Typography System */
+  --font-hero: 'Space Grotesk', sans-serif;
+  --font-main: 'Manrope', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  background-color: var(--bg-color);
+  color: var(--text-white);
+  font-family: var(--font-main);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* =========================================
+   TYPOGRAPHY ENFORCEMENT CLASSES
+   ========================================= */
+
+.font-bc-black {
+  font-family: var(--font-hero);
+  font-weight: 800;
+}
+
+.font-bc-bold {
+  font-family: var(--font-hero);
+  font-weight: 700;
+}
+
+.font-manrope-semibold {
+  font-family: var(--font-main);
+  font-weight: 600;
+}
+
+.font-manrope-medium {
+  font-family: var(--font-main);
+  font-weight: 500;
+}
+
+.font-manrope-regular {
+  font-family: var(--font-main);
+  font-weight: 400;
+}
+
+/* =========================================
+   TYPOGRAPHY SCALE
+   ========================================= */
+
+/* Headline 1 — heavy, blue gradient, strong glow */
+.h1-premium {
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 800;
+  background: var(--text-h1-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0px 4px 20px rgba(0, 114, 255, 0.4));
+  line-height: 1.1;
+  margin-bottom: 1rem;
+  letter-spacing: -2px;
+  font-family: var(--font-hero);
+}
+
+/* Headline 2 — teal, softer glow */
+.h2-subtle {
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 700;
+  color: var(--text-h2-color);
+  filter: drop-shadow(0px 2px 10px rgba(206, 242, 242, 0.2));
+  line-height: 1.2;
+  font-family: var(--font-hero);
+}
+
+/* Subtext — white, no glow */
+.subtext-body {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 400;
+  color: var(--text-white);
+  opacity: 0.9;
+  line-height: 1.6;
+  max-width: 600px;
+  font-family: var(--font-main);
+}
+
+/* =========================================
+   UTILITIES
+   ========================================= */
+
+.text-logo-font {
+  font-family: var(--font-hero);
+  letter-spacing: -0.03em;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
