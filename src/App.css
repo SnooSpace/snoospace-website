@@ -396,11 +396,11 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) translateY(-12vh); /* Positioned comfortably above center */
+  transform: translate(-50%, -50%) translateY(-18vh); /* Positioned comfortably above center */
 }
 
 .btn-play-reveal:hover {
-  transform: translate(-50%, -50%) translateY(-12vh) scale(1.1);
+  transform: translate(-50%, -50%) translateY(-18vh) scale(1.1);
   background: white;
   box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
 }
@@ -421,10 +421,36 @@
 @keyframes fadeInBtn {
   from {
     opacity: 0;
-    transform: scale(0.82);
+    transform: translate(-50%, -50%) translateY(-18vh) scale(0.82);
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: translate(-50%, -50%) translateY(-18vh) scale(1);
   }
+}
+
+/* Mute Toggle */
+.btn-mute-toggle {
+  position: absolute;
+  bottom: 5vh;
+  right: 5vh;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: rgba(21, 20, 30, 0.4);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1000;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: auto;
+}
+
+.btn-mute-toggle:hover {
+  background: rgba(21, 20, 30, 0.6);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: scale(1.08);
 }

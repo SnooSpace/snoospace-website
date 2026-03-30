@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import { ChartNoAxesGantt, ChevronDown, Play, Pause } from "lucide-react";
+import { ChartNoAxesGantt, ChevronDown, Play, Pause, Volume2, VolumeX } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
@@ -25,12 +25,23 @@ function App() {
 
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [isHoveringLanding, setIsHoveringLanding] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
 
   const handlePlayVideo = () => {
     if (landingVideoRef.current) {
       landingVideoRef.current.muted = false;
       landingVideoRef.current.currentTime = 0;
       landingVideoRef.current.play();
+      setIsMuted(false);
+    }
+  };
+
+  const toggleMute = (e) => {
+    e.stopPropagation();
+    if (landingVideoRef.current) {
+      const newMuteStatus = !landingVideoRef.current.muted;
+      landingVideoRef.current.muted = newMuteStatus;
+      setIsMuted(newMuteStatus);
     }
   };
 
@@ -267,6 +278,11 @@ function App() {
               >
                 COMING SOON
               </h1>
+
+              {/* Mute/Unmute toggle in bottom left */}
+              <button className="btn-mute-toggle" onClick={toggleMute}>
+                {isMuted ? <VolumeX color="white" size={24} /> : <Volume2 color="white" size={24} />}
+              </button>
             </div>
           </div>
 
