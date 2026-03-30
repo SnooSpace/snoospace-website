@@ -129,6 +129,7 @@ function App() {
     heroTl
       .to(scrollPromptRef.current, { autoAlpha: 0, duration: 0.6 }, 0)
       .to(landingVideoRef.current, { opacity: 0, duration: 0.8 }, 0)
+      .to(".landing-content", { opacity: 0, duration: 0.8 }, 0)
       .to(maskOverlayRef.current, { opacity: 1, duration: 0.8 }, 0.5);
 
     // Mid-way Transition (5s): This is now handled by startTextSequence triggered by video events
