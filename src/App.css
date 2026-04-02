@@ -1,11 +1,43 @@
-/* Container handling the timeline-based scrolling */
+/* App.css */
+:root {
+  --bg-color: #0b0b13;
+  --text-white: #ffffff;
+  --font-main: 'Manrope', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-white);
+  font-family: var(--font-main);
+  overflow-x: hidden;
+}
+
 .app-container {
   width: 100vw;
   background-color: var(--bg-color);
   position: relative;
 }
 
-/* Global Fixed Navigation */
+/* ═══════════════════════════════════════
+   GTA VI-style PAGE LOAD OVERLAY
+   ═══════════════════════════════════════ */
+.load-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: #000;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════
+   GLOBAL FIXED NAVIGATION
+   ═══════════════════════════════════════ */
 .global-nav {
   position: fixed;
   top: 0;
@@ -17,12 +49,9 @@
   align-items: center;
   z-index: 1000;
   pointer-events: none;
-  font-family: var(--font-main);
 }
 
-.global-nav > * {
-  pointer-events: auto;
-}
+.global-nav > * { pointer-events: auto; }
 
 .nav-logo {
   height: 40px;
@@ -43,68 +72,48 @@
   height: 36px;
   transition: opacity 0.3s;
 }
-.nav-icon:hover {
-  opacity: 0.8;
-}
 
-/* Section 1 Specifics */
+.nav-icon:hover { opacity: 0.8; }
 
-.video-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 0;
-}
+/* ═══════════════════════════════════════
+   GTA VI-STYLE CINEMATIC SCROLL SECTION
+   (cr- prefix = cinematic-reveal)
+   ═══════════════════════════════════════ */
 
-.video-container video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.6;
-}
-
-.s2-video video {
-  opacity: 1 !important;
-}
-
-.video-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+/* cr-container: the single unified pinned section
+   wraps video landing + GTA VI wordmark animation */
+.cr-container {
+  min-height: 100svh;
+  position: relative;
   background: linear-gradient(
-    to bottom,
-    rgba(21, 20, 30, 0.2),
-    rgba(21, 20, 30, 0.9)
+    223.17deg,
+    rgb(14, 12, 30)  0%,
+    rgb(13, 11, 28)  8.61%,
+    rgb(11, 10, 25) 17.21%,
+    rgb(10,  9, 22) 25.82%,
+    rgb( 9,  8, 19) 34.42%,
+    rgb( 8,  8, 17) 43.03%,
+    rgb( 7,  7, 15) 51.63%
   );
-  z-index: 1;
+  overflow: hidden;
 }
 
-/* Stitch Background */
-.stitch-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #0b0b13;
-  overflow: hidden;
-  z-index: 0;
-}
-.stitch-bg::after {
-  content: "";
+/* ── Phase 0: Landing layer — sits on top, fades as one unit on scroll ── */
+.cr-video-layer {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(
-    rgba(255, 255, 255, 0.15) 1px,
-    transparent 1px
-  );
-  background-size: 24px 24px;
-  z-index: 2;
+  z-index: 20;
+  will-change: opacity;
 }
+
+/* Plain black background for the landing layer */
+.cr-landing-bg {
+  position: absolute;
+  inset: 0;
+  background-color: #000;
+  z-index: 0;
+}
+
 .aurora-blob {
   position: absolute;
   filter: blur(100px);
@@ -112,26 +121,24 @@
   opacity: 0.6;
   animation: moveBlob 20s infinite alternate ease-in-out;
 }
+
 .blob-1 {
-  width: 70vw;
-  height: 70vh;
+  width: 70vw; height: 70vh;
   background: radial-gradient(circle, #00c6ff, transparent 70%);
-  bottom: -15%;
-  right: -15%;
+  bottom: -15%; right: -15%;
 }
+
 .blob-2 {
-  width: 70vw;
-  height: 70vh;
+  width: 70vw; height: 70vh;
   background: radial-gradient(circle, #5b3aff, transparent 70%);
-  top: -15%;
-  left: -15%;
+  top: -15%; left: -15%;
   animation-delay: -8s;
 }
+
 .cursor-glow {
   position: absolute;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(0, 198, 255, 0.15), transparent 70%);
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(0,198,255,0.15), transparent 70%);
   border-radius: 50%;
   pointer-events: none;
   z-index: 1;
@@ -139,63 +146,29 @@
   transform: translate(-50%, -50%);
   will-change: transform;
 }
+
 @keyframes moveBlob {
-  0% {
-    transform: translate(0, 0) scale(1) rotate(0deg);
-  }
-  33% {
-    transform: translate(15vw, 10vh) scale(1.2) rotate(120deg);
-  }
-  66% {
-    transform: translate(-10vw, 20vh) scale(0.8) rotate(240deg);
-  }
-  100% {
-    transform: translate(0, 0) scale(1) rotate(360deg);
-  }
+  0%   { transform: translate(0,0) scale(1) rotate(0deg); }
+  33%  { transform: translate(15vw,10vh) scale(1.2) rotate(120deg); }
+  66%  { transform: translate(-10vw,20vh) scale(0.8) rotate(240deg); }
+  100% { transform: translate(0,0) scale(1) rotate(360deg); }
 }
 
-/* Scroll Indicators */
-.initial-scroll {
+/* Video inside the landing layer */
+.cr-video-inner {
   position: absolute;
-  bottom: 10vh; /* Raised significantly to avoid looking 'too low' */
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  inset: 0;
+  z-index: 0;
 }
 
-.scroll-indicator {
-  color: #00c6ff;
-  width: 48px;
-  height: 48px;
-  animation: bounce 2s infinite;
-  filter: drop-shadow(0px 0px 8px rgba(0, 198, 255, 0.6));
-  cursor: pointer;
-}
-
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-6px);
-  }
-  60% {
-    transform: translateY(-2px);
-  }
-}
-
-.landing-video-container video {
+.cr-video-inner video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   opacity: 0.8;
 }
 
-.landing-promo-layer {
-  z-index: 10; /* Ensures this entire interactive layer is above the masks */
-}
-
+/* Controls / text overlay inside landing layer */
 .landing-content {
   position: absolute;
   inset: 0;
@@ -213,248 +186,312 @@
   margin-top: 15vh;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  text-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-  background: linear-gradient(
-    180deg,
-    #ffffff 0%,
-    rgba(255, 255, 255, 0.6) 100%
-  );
+  text-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.6) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   will-change: transform, background-image;
 }
 
-.landing-video-container {
-  z-index: 1;
-}
-
-.landing-video-container video {
-  opacity: 0.8;
-}
-
-/* Spacer block to provide enough scrolling height */
-.scroll-spacer {
-  height: 300vh;
-  width: 100vw;
-}
-
-.pin-container {
-  height: 100vh;
-  width: 100vw;
-  position: relative;
-  overflow: hidden;
-}
-
-.pinned-panels {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-/* =========================================
-   GTA 6 HERO SCROLL CLASSES
-   ========================================= */
-
-.hero-wrapper {
-  position: relative;
-  height: 500vh;
-  width: 100vw;
-}
-
-.hero-pin {
-  height: 100vh;
-  width: 100vw;
-  position: relative;
-  overflow: hidden;
-  background-color: var(--bg-color);
-}
-
-.hero-layer {
-  position: absolute;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-}
-
-.hero-layer-bg {
-  z-index: 1;
-}
-
-.hero-layer-white-fill {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: white;
-  z-index: 1.5;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.hero-layer-mask {
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-}
-
-.hero-svg-overlay {
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-}
-
-.hero-brand-wordmark-fg {
-  width: 500px;
-  max-width: 90vw;
-  object-fit: contain;
-  opacity: 1;
-  filter: drop-shadow(0 0 30px rgba(0, 198, 255, 0.2));
-  transform: translateY(-8vh);
-}
-
-.hero-white-glow {
-  position: absolute;
-  inset: 0;
-  background-color: white;
-  z-index: 4;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.hero-wipe-container {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding-bottom: 5rem;
-  pointer-events: none;
-}
-
-.hero-wipe-text {
-  font-size: clamp(3rem, 6vw, 5rem);
-  text-align: center;
-  background: linear-gradient(
-    to top,
-    rgba(255, 255, 255, 1) 50%,
-    rgba(255, 255, 255, 0) 50%
-  );
-  background-size: 100% 200%;
-  background-position: 100% 100%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  opacity: 0;
-}
-
-/* Scroll Indicators */
-.initial-scroll {
-  position: absolute;
-  bottom: 0vh;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.hero-final-logo {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) translateY(-8vh);
-  width: 500px;
-  max-width: 90vw;
-  z-index: 6;
-  opacity: 0;
-  filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.2));
-}
-
-/* =========================================
-   PLAY / PAUSE BUTTON
-   ========================================= */
-
 .btn-play-reveal {
-  width: 90px;
-  height: 90px;
+  width: 90px; height: 90px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 100;
+  background: rgba(255,255,255,0.95);
+  border: 1px solid rgba(255,255,255,0.2);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 100;
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
   backdrop-filter: blur(10px);
-  /* Absolute positioning to prevent interfering with COMING SOON text */
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) translateY(-18vh); /* Positioned comfortably above center */
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%) translateY(-18vh);
 }
 
 .btn-play-reveal:hover {
-  transform: translate(-50%, -50%) translateY(-18vh) scale(1.1);
+  transform: translate(-50%,-50%) translateY(-18vh) scale(1.1);
   background: white;
-  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 15px 50px rgba(0,0,0,0.6);
 }
 
-.btn-play-reveal svg {
-  transform: translateX(3px);
-}
+.btn-play-reveal svg { transform: translateX(3px); }
 
-/* Pause button: same base style, no translateX offset on icon */
 .btn-pause-reveal {
-  animation: fadeInBtn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation: fadeInBtn 0.25s cubic-bezier(0.34,1.56,0.64,1) forwards;
 }
 
-.btn-pause-reveal svg {
-  transform: translateX(0) !important;
-}
+.btn-pause-reveal svg { transform: translateX(0) !important; }
 
 @keyframes fadeInBtn {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -50%) translateY(-18vh) scale(0.82);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%) translateY(-18vh) scale(1);
-  }
+  from { opacity: 0; transform: translate(-50%,-50%) translateY(-18vh) scale(0.82); }
+  to   { opacity: 1; transform: translate(-50%,-50%) translateY(-18vh) scale(1); }
 }
 
-/* Mute Toggle */
 .btn-mute-toggle {
   position: absolute;
-  bottom: 5vh;
-  right: 5vh;
-  width: 54px;
-  height: 54px;
+  bottom: 5vh; right: 5vh;
+  width: 54px; height: 54px;
   border-radius: 50%;
-  background: rgba(21, 20, 30, 0.4);
+  background: rgba(21,20,30,0.4);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 1000;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  pointer-events: auto;
+  border: 1px solid rgba(255,255,255,0.15);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 1000;
+  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
 }
 
 .btn-mute-toggle:hover {
-  background: rgba(21, 20, 30, 0.6);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(21,20,30,0.6);
+  border-color: rgba(255,255,255,0.3);
   transform: scale(1.08);
+}
+
+/* Scroll chevron (fades with landing layer) */
+.initial-scroll {
+  position: absolute;
+  bottom: 2vh; left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  animation: bounce 2s infinite;
+}
+
+.cr-scroll-indicator {
+  width: 34px; height: 14px;
+  color: #00c6ff;
+  filter: drop-shadow(0 0 8px rgba(0,198,255,0.6));
+}
+
+.cr-scroll-indicator svg {
+  width: 100%; height: 100%;
+}
+
+@keyframes bounce {
+  0%,20%,50%,80%,100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(-5px); }
+}
+
+/* ── Hero-1: The main scene that plays during scroll ── */
+.cr-hero-1-container {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+
+/* hero-main-container holds the SVG wordmark as a bg-image
+   (starts huge like GTA VI: 1200vw, animates to 80vw)
+   transform starts at scale(1.25) in CSS to prevent flick before GSAP loads */
+.cr-hero-main-container {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  transform: scale(1.25); /* baked in CSS — GSAP takes over from here */
+  will-change: transform, background-size;
+  background-image: url("/SnooSpace_TEXT_LOGO_Dark.svg");
+  background-size: 1200vw;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+}
+
+/* BG aurora gradient — the "hero image" substitute (fades out) */
+.cr-hero-main-image {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 80%, rgba(0, 198, 255, 0.35) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 60% at 80% 20%, rgba(91, 58, 255, 0.35) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 80% at 50% 50%, rgba(0, 72, 255, 0.2) 0%, transparent 70%),
+    linear-gradient(180deg, #0d0d22 0%, #080810 100%);
+}
+
+/* ── Logo crossfade layers (Phases 1 → 3) ──────────────────────────────── */
+
+/* GSAP owns all transforms + opacity + filter. CSS only sets fallback opacity. */
+.cr-logo-main {
+  position: absolute;
+  width: 30vw;
+  height: auto;
+  opacity: 0;           /* fallback before GSAP initialises */
+  pointer-events: none;
+  will-change: transform, opacity, filter;  /* GPU-accelerate the color animation */
+  z-index: 6;
+}
+
+/* oo-cut and master logo: GSAP sets all position/opacity */
+.cr-logo-oo-cut,
+.cr-logo-final {
+  position: absolute;
+  height: auto;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.cr-logo-oo-cut { width: 30vw; z-index: 7; }
+.cr-logo-final  { width: 30vw; z-index: 8; }
+
+/* FG overlay — SnooSpace logo, centered (fades out revealing wordmark) */
+.cr-hero-main-logo {
+  width: 50vw;
+  max-width: 520px;
+  height: auto;
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  object-fit: contain;
+  filter: drop-shadow(0 0 40px rgba(0, 198, 255, 0.25));
+}
+
+/* Text-logo container: full-viewport, stacking context for mask/logo reveals */
+.cr-hero-text-logo-container {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Tinted colored wordmark (like GTA's purple logo) — revealed via mask */
+.cr-hero-text-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80vw;
+  height: auto;
+  max-width: none;
+  display: block;
+  /* Cyan-blue tint: black out all pixels then shift hue to cyan */
+  filter: brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(160deg) brightness(1.3);
+  opacity: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* "YOUR SPACE AWAITS" gradient text (GTA VI's "Coming May 26 2026" equivalent) */
+.cr-hero-text {
+  color: #a0cfff;
+  text-align: center;
+  text-transform: uppercase;
+  background-image: radial-gradient(
+    circle at 50% 200vh,
+    rgba(0, 198, 255, 0) 0,
+    rgba(0, 114, 255, 0.5) 90vh,
+    rgba(91, 58, 255, 0.8) 120vh,
+    rgba(11, 11, 19, 0) 150vh
+  );
+  -webkit-text-fill-color: transparent;
+  font-size: 4.5rem;
+  background-clip: text;
+  -webkit-background-clip: text;
+  width: 100%;
+  line-height: 0.9;
+  margin-top: 55%;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* ── Hero-2: Tagline panel (GTA VI's "Vice City" panel) ── */
+.cr-hero-2-container {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  background-image: radial-gradient(
+    circle at 50% 200vh,
+    rgba(0, 198, 255, 0) 0,
+    rgba(0, 114, 255, 0.5) 90vh,
+    rgba(91, 58, 255, 0.8) 120vh,
+    rgba(11, 11, 19, 0) 150vh
+  );
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  font-size: 6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: left;
+  padding: 0 2rem;
+}
+
+.cr-hero-2-container p {
+  max-width: 90%;
+  font-size: 1rem;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+.cr-hero-2-container h3 {
+  font-size: 2.5rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Scroll chevron for cinematic section */
+.cr-scroll-indicator {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 34px; height: 14px;
+  z-index: 10;
+  color: #00c6ff;
+  filter: drop-shadow(0 0 8px rgba(0, 198, 255, 0.6));
+}
+
+.cr-scroll-indicator svg {
+  width: 100%; height: 100%;
+}
+
+/* Post-reveal spacer */
+.post-reveal-content {
+  min-height: 100vh;
+  background: #000;
+}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════ */
+@media (min-width: 1024px) {
+  .cr-hero-text {
+    font-size: 6rem;
+  }
+
+  .cr-scroll-indicator {
+    bottom: 30px;
+  }
+
+  .cr-hero-2-container {
+    margin: 0 auto;
+    max-width: 60%;
+    padding: 0;
+  }
+
+  .cr-hero-2-container p {
+    max-width: 90%;
+    font-size: 1.6rem;
+  }
+
+  .cr-hero-2-container h3 {
+    font-size: 3.5rem;
+  }
 }
