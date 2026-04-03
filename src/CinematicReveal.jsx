@@ -146,7 +146,6 @@ export default function CinematicReveal() {
       {/* ══ PHASE 0: Landing layer (fades as one unit on scroll) ══════════ */}
       <div className="cr-video-layer">
         <div className="cr-landing-bg" />
-        <div className="cursor-glow" />
 
         <div className="cr-video-inner">
           <video

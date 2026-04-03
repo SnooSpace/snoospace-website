@@ -67,6 +67,9 @@ function App() {
       {/* GTA VI-style black load overlay */}
       <div ref={loadOverlayRef} className="load-overlay" />
 
+      {/* Global persistent mouse cursor glow */}
+      <div className="cursor-glow" />
+
       {/* Fixed navigation */}
       <nav className="global-nav">
         <img

@@ -87,13 +87,13 @@ body {
   position: relative;
   background: linear-gradient(
     223.17deg,
-    rgb(14, 12, 30)  0%,
-    rgb(13, 11, 28)  8.61%,
-    rgb(11, 10, 25) 17.21%,
-    rgb(10,  9, 22) 25.82%,
-    rgb( 9,  8, 19) 34.42%,
-    rgb( 8,  8, 17) 43.03%,
-    rgb( 7,  7, 15) 51.63%
+    rgb(18, 14, 45)  0%,
+    rgb(16, 12, 40)  8.61%,
+    rgb(14, 11, 35) 17.21%,
+    rgb(12, 10, 30) 25.82%,
+    rgb(10,  8, 25) 34.42%,
+    rgb( 8,  7, 20) 43.03%,
+    rgb( 7,  6, 18) 51.63%
   );
   overflow: hidden;
 }
@@ -136,12 +136,12 @@ body {
 }
 
 .cursor-glow {
-  position: absolute;
+  position: fixed;
   width: 600px; height: 600px;
   background: radial-gradient(circle, rgba(0,198,255,0.15), transparent 70%);
   border-radius: 50%;
   pointer-events: none;
-  z-index: 1;
+  z-index: 10;
   filter: blur(80px);
   transform: translate(-50%, -50%);
   will-change: transform;
