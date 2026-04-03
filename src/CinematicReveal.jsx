@@ -69,11 +69,12 @@ export default function CinematicReveal() {
       gsap.set(".cr-logo-main", {
         xPercent: -50, yPercent: -50,
         top: "50%",    left: "50%",
-        scale: 25,
+        scale: 45,
         opacity: 0,
-        transformOrigin: "49.66% 49.3%",   // pivot = second 'S' ("Space") center
-        // sepia→hue-rotate→saturate converts white pixels to deep blue-teal
-        filter: "sepia(1) hue-rotate(170deg) saturate(4)",
+        // The second 'S' (in "Space") is exactly in the center of the logo.
+        // X bounds: 397.78 to 489.58 => Center: 443.68.  443.68/893 = 49.68%
+        // Y bounds => Center: ~49.5%
+        transformOrigin: "49.68% 49.5%",   // Exact geometrical center of the 2nd 'S'
       });
       gsap.set(".cr-logo-oo-cut", {
         xPercent: -50, yPercent: -50,
@@ -93,58 +94,47 @@ export default function CinematicReveal() {
           scrub: 1,
           pin: true,
           start: "top top",
-          end: "+=2500",
+          end: "+=3000",
           ease: "none",
           invalidateOnRefresh: true,
         },
       });
 
-      // ── PHASE 0: Video fades fast, logo appears concurrently (no black moment) ──
-      tl.to(".cr-video-layer", { opacity: 0, duration: 0.5 }, 0);
+      // ── PHASE 0: Everything fades simultaneously (play btn, coming soon, video bg) ──
+      tl.to(".cr-video-layer", { opacity: 0, duration: 0.8, ease: "power2.inOut" }, 0);
+      tl.to(".initial-scroll", { opacity: 0, duration: 0.4 }, 0);
 
-      // Logo fades in DURING the video fade — starts colored (blue-teal), gradually turns white
-      tl.to(".cr-logo-main", { opacity: 1, duration: 1.2 }, 0);
+      // ── PHASE 1: CinematicReveal begins AFTER the fade is complete ──
+      // Logo fades in — starts colored (blue-teal), gradually turns white
+      // Starts at t=0.8 (right after fade completes) for a clean black gap
+      tl.to(".cr-logo-main", { opacity: 1, duration: 1.2 }, 0.8);
 
-      // Simultaneously: scale 25→1 AND rise 50%→20% (pure GTA VI zoom-out)
+      // Simultaneously: scale 45→1 AND rise 50%→20% (pure GTA VI zoom-out)
       // transformOrigin stays at second 'S' — pivot rises from viewport-center to top-20%
       tl.fromTo(
         ".cr-logo-main",
-        { scale: 25, top: "50%" },
+        { scale: 45, top: "50%" },
         { scale: 1,  top: "20%", duration: 2.5, ease: "power2.inOut" },
-        0
+        1.3
       );
-
-      // Color fades to white during the latter half of the zoom
-      // ">-1" = 1 unit before fromTo ends (t=2.5−1=1.5), finishing exactly as logo settles
-      tl.to(".cr-logo-main", {
-        filter: "sepia(0) hue-rotate(0deg) saturate(1)",
-        duration: 1,
-      }, ">-1");
 
       // ── PHASE 3a: logo (now white) → oo-cut crossfade ─────────────────
-      tl.to(".cr-logo-main",   { opacity: 0, duration: 0.8 }, ">");
-      tl.to(".cr-logo-oo-cut", { opacity: 1, duration: 0.8 }, "<");
+      // Label the start so tagline + Phase 3b can both reference it independently
+      tl.addLabel("phase3a");
+      tl.to(".cr-logo-main",   { opacity: 0, duration: 0.8 }, "phase3a");
+      tl.to(".cr-logo-oo-cut", { opacity: 1, duration: 0.8 }, "phase3a");
+
+      // ── PHASE 4: Ghost appears at phase3a, then blooms to full (GTA VI style) ──
+      // Instantly set to ghost state (visible but faint) exactly when white logo settles
+      tl.set(".cr-hero-2-container", { visibility: "visible", opacity: 0.07 }, "phase3a");
+      // Then bloom from ghost → full vibrant color
+      tl.to(".cr-hero-2-container", { opacity: 1, duration: 2.5, ease: "power2.inOut" }, "phase3a");
 
       // ── PHASE 3b: oo-cut → Master Logo crossfade ───────────────────────
-      tl.to(".cr-logo-oo-cut", { opacity: 0, duration: 0.6 }, ">");
-      tl.to(".cr-logo-final",  { opacity: 1, duration: 0.6 }, "<");
-
-      // ── PHASE 4: Tagline fades in ───────────────────────────────────────
-      tl.set(".cr-hero-2-container", { visibility: "visible" });
-      tl.to(".cr-hero-2-container",  { opacity: 1, duration: 3 }, ">");
-
-      // Tagline gradient shifts to brand colours
-      tl.fromTo(
-        ".cr-hero-2-container",
-        {
-          backgroundImage: `radial-gradient(circle at 50% 200vh, rgba(0,198,255,0) 0, rgba(0,114,255,0.5) 90vh, rgba(91,58,255,0.8) 120vh, rgba(11,11,19,0) 150vh)`,
-        },
-        {
-          backgroundImage: `radial-gradient(circle at 50% 3.9575vh, rgb(0,230,255) 0vh, rgb(0,114,255) 50.011vh, rgb(91,58,255) 90.0183vh, rgba(11,11,19,0) 140.599vh)`,
-          duration: 3,
-        },
-        "<1.2"
-      );
+      // Anchored to label+0.8 so it fires after 3a's 0.8s crossfade,
+      // independent of the tagline's longer 2.5s fade
+      tl.to(".cr-logo-oo-cut", { opacity: 0, duration: 0.6 }, "phase3a+=0.8");
+      tl.to(".cr-logo-final",  { opacity: 1, duration: 0.6 }, "phase3a+=0.8");
     }, containerRef);
 
     return () => ctx.revert();

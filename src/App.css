@@ -1,6 +1,6 @@
 /* App.css */
 :root {
-  --bg-color: #0b0b13;
+  --bg-color: #121218;
   --text-white: #ffffff;
   --font-main: 'Manrope', sans-serif;
 }
@@ -192,6 +192,8 @@ body {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   will-change: transform, background-image;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .btn-play-reveal {
@@ -318,7 +320,7 @@ body {
   height: auto;
   opacity: 0;           /* fallback before GSAP initialises */
   pointer-events: none;
-  will-change: transform, opacity, filter;  /* GPU-accelerate the color animation */
+  will-change: opacity;  /* Removed transform and filter to prevent low-res rasterization */
   z-index: 6;
 }
 
@@ -409,14 +411,15 @@ body {
   height: 100vh;
   position: absolute;
   inset: 0;
+  /* Starts fully hidden — GSAP sets ghost state at the right moment */
   opacity: 0;
   visibility: hidden;
   background-image: radial-gradient(
-    circle at 50% 200vh,
-    rgba(0, 198, 255, 0) 0,
-    rgba(0, 114, 255, 0.5) 90vh,
-    rgba(91, 58, 255, 0.8) 120vh,
-    rgba(11, 11, 19, 0) 150vh
+    circle at 50% 3.9575vh,
+    rgb(0, 230, 255) 0vh,
+    rgb(0, 114, 255) 50.011vh,
+    rgb(91, 58, 255) 90.0183vh,
+    rgba(11, 11, 19, 0) 140.599vh
   );
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -429,6 +432,8 @@ body {
   align-items: flex-start;
   text-align: left;
   padding: 0 2rem;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .cr-hero-2-container p {
