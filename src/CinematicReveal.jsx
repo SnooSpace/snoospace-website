@@ -130,6 +130,51 @@ export default function CinematicReveal() {
       // Then bloom from ghost → full vibrant color
       tl.to(".cr-hero-2-container", { opacity: 1, duration: 2.5, ease: "power2.inOut" }, "phase3a");
 
+      // Word-by-word reveal staggered 0.08s apart
+      // Headline reveal
+      tl.fromTo(".line1", {
+        y: 28,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 0.75,
+        ease: "power3.out"
+      }, "phase3a-=2.3");
+
+      // Span 1 reveal
+      tl.fromTo(".body-span-1", {
+        y: 20,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 0.75,
+        ease: "power2.out"
+      }, "phase3a-=1.8");
+
+      // Span 2 reveal
+      tl.fromTo(".body-span-2", {
+        y: 20,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 0.75,
+        ease: "power2.out"
+      }, "phase3a-=1.3");
+
+      // Span 3 reveal
+      tl.fromTo(".body-span-3", {
+        y: 16,
+        opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: "power2.out"
+      }, "phase3a-=0.7");
+
       // ── PHASE 3b: oo-cut → Master Logo crossfade ───────────────────────
       // Anchored to label+0.8 so it fires after 3a's 0.8s crossfade,
       // independent of the tagline's longer 2.5s fade
@@ -227,11 +272,21 @@ export default function CinematicReveal() {
 
       {/* ══ PHASE 4: Tagline panel ════════════════════════════════════════ */}
       <div className="cr-hero-2-container">
-        <h3>Your Community. Your Space.</h3>
-        <p>
-          SnooSpace is where your people gather — discover events near you,
-          grab tickets instantly, and feel the pulse of your community.
-        </p>
+        <h3 className="line1">
+          You've been there before.
+        </h3>
+        <div className="cr-hero-2-body">
+          <span className="body-span body-span-1">
+            Surrounded by hundreds of interesting people. The room fills up. Somewhere across the venue is someone who could change everything — a collaborator, a co-founder, a friend, a spark.
+          </span>
+          <span className="body-span body-span-2">
+            But the room is loud, the moment is brief, and an hour later you're back in your car. You attended the event. You just didn't connect at it.
+          </span>
+          <span className="body-span body-span-3">
+            SnooSpace was built for everything that should have happened in that room.
+          </span>
+        </div>
+        <div className="cr-hero-2-bottom-rule" />
       </div>
 
     </div>

@@ -1,4 +1,18 @@
 /* index.css */
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  src: url('/fonts/PlusJakartaSans-VariableFont_wght.ttf') format('truetype');
+  font-weight: 200 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Inclusive Sans';
+  src: url('/fonts/InclusiveSans-VariableFont_wght.ttf') format('truetype');
+  font-weight: 300 800;
+  font-style: normal;
+}
+
 :root {
   --bg-color: #0b0b13;
   --text-white: #ffffff;
