@@ -1,0 +1,63 @@
+.transition-screen {
+  position: relative;
+  width: 100%;
+  min-height: 50vh;
+  z-index: 10;
+  display: flex;
+  align-items: center; /* Center everything vertically */
+  padding: 10vh max(48px, 6vw);
+}
+
+.transition-screen::before {
+  content: "";
+  position: absolute;
+  top: -15vh;
+  left: 0;
+  width: 100%;
+  height: calc(100% + 30vh); /* Accommodates the overhanging cuts */
+  background-color: #06060f;
+  clip-path: polygon(0 15vh, 100% 0, 100% calc(100% - 15vh), 0 100%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.ts-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1100px; /* Narrowed to pull elements closer */
+  margin: 0 auto;
+}
+
+.ts-left {
+  flex: 0 0 55%;
+}
+
+.ts-right {
+  flex: 0 0 45%;
+  display: flex;
+  justify-content: flex-start; /* Pulls it away from the far right edge */
+  padding-left: 24px;
+}
+
+.ts-text {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.8rem, 5.5vw, 5rem);
+  line-height: 1.0;
+  color: #FAFBFF;
+  letter-spacing: -0.025em;
+  text-transform: none;
+  margin: 0;
+}
+
+.ts-subtext {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.25rem, 2vw, 1.6rem);
+  color: rgba(250, 251, 255, 0.75);
+  max-width: 380px;
+  line-height: 1.5;
+  margin: 0;
+}

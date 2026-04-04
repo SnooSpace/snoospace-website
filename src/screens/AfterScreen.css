@@ -1,0 +1,238 @@
+.after-screen {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  background-color: #06060f;
+  background-image: linear-gradient(
+      135deg,
+      rgba(6, 6, 15, 0.92) 0%,
+      rgba(6, 6, 15, 0.55) 100%
+    ),
+    url("/Back_Home_scrolling.png");
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.as-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding: 0 max(48px, 6vw);
+  padding-top: 8vh;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+/* Left Side Content */
+.as-left {
+  flex: 0 0 58%;
+  max-width: 720px;
+  z-index: 2;
+  padding-top: 4vh;
+}
+
+.as-eyebrow {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  color: #3b5bdb;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  opacity: 0;
+}
+
+.as-quote {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-weight: 800;
+  color: #fafbff;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.as-quote-line-1 {
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+}
+
+.as-quote-line-2 {
+  font-size: calc(clamp(1.8rem, 3.5vw, 3rem) * 0.7);
+  font-weight: 300;
+  color: rgba(250, 251, 255, 0.7);
+  margin-top: 4px;
+}
+
+.as-quote-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.as-subtext-wrapper {
+  margin-top: 16px;
+  position: relative;
+  min-height: 320px; /* More room for the punchline beat */
+}
+
+.as-subtext-beat-1, .as-subtext-beat-2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.as-subtext {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+  color: rgba(250, 251, 255, 0.7);
+  max-width: 600px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.as-subtext-punch {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.2rem, 1.8vw, 1.4rem);
+  color: rgba(250, 251, 255, 0.70);
+  margin-top: 24px;
+  margin-bottom: 24px;
+  display: block;
+}
+
+.as-subtext + .as-subtext {
+  margin-top: 12px;
+}
+
+.as-pull-quote {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  border-left: 2px solid #3b5bdb;
+  padding-left: 16px;
+  margin-top: 20px;
+  opacity: 0;
+  transform: translateX(-12px);
+  display: flex;
+  flex-direction: column;
+}
+
+.as-pull-line-1 {
+  font-weight: 300;
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  color: rgba(250, 251, 255, 0.6);
+}
+
+.as-pull-line-2 {
+  font-weight: 700;
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  color: #fafbff;
+  margin-top: 2px;
+}
+
+/* Right Side Phone Mockup */
+.as-right {
+  flex: 0 0 38%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 10vh;
+  z-index: 2;
+  opacity: 0;
+  transform: translateY(60px);
+}
+
+.phone-mockup {
+  width: 240px;
+  height: 490px;
+  border-radius: 36px;
+  border: 1.5px solid rgba(59, 91, 219, 0.4);
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.7), 0 0 60px rgba(59, 91, 219, 0.15);
+  background: #0e0e1a;
+  position: relative;
+  overflow: hidden;
+  animation: floatPhoneAfter 4s ease-in-out infinite;
+}
+
+.phone-screen {
+  width: 100%;
+  height: 100%;
+  background-image: url("/screen-after-list.png"); /* Placeholder for final screen */
+  background-size: cover;
+  background-position: top;
+}
+
+@keyframes floatPhoneAfter {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Phase Indicator */
+.as-indicator {
+  position: absolute;
+  bottom: 5vh;
+  right: max(48px, 6vw);
+  display: flex;
+  gap: 24px;
+  z-index: 10;
+  align-items: center;
+}
+
+.as-indicator-line-track {
+  position: absolute;
+  top: 50%;
+  left: 4px;
+  right: 4px;
+  height: 1px;
+  background: rgba(250, 251, 255, 0.1);
+  transform: translateY(-50%);
+  z-index: -1;
+}
+
+.as-indicator-line-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%; /* Fully filled for Final Screen */
+  background: #3b5bdb;
+  transform-origin: left;
+}
+
+.as-indicator-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(250, 251, 255, 0.3);
+  transition: color 0.4s ease;
+  background: #06060f;
+  padding: 4px;
+}
+
+.as-indicator-item.active {
+  color: #fafbff;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid rgba(250, 251, 255, 0.3);
+  transition: all 0.4s ease;
+  position: relative;
+  background: #06060f;
+}
+
+.as-indicator-item.filled .dot {
+  background-color: #3b5bdb;
+  border-color: #3b5bdb;
+}

@@ -19,7 +19,7 @@ body {
 }
 
 .app-container {
-  width: 100vw;
+  width: 100%;
   background-color: var(--bg-color);
   position: relative;
 }

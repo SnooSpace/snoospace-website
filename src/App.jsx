@@ -6,6 +6,10 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
 import "./App.css";
 import CinematicReveal from "./CinematicReveal";
+import BeforeScreen from "./screens/BeforeScreen";
+import TransitionBeforeDuring from "./screens/TransitionBeforeDuring";
+import DuringScreen from "./screens/DuringScreen";
+import AfterScreen from "./screens/AfterScreen";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -83,6 +87,18 @@ function App() {
 
       {/* Unified hero: video landing + GTA VI scroll animation */}
       <CinematicReveal />
+
+      {/* Next screen in flow: Stage 1 - BEFORE */}
+      <BeforeScreen />
+
+      {/* Static Diagonal Separator */}
+      <TransitionBeforeDuring />
+
+      {/* Next screen in flow: Stage 2 - DURING */}
+      <DuringScreen />
+
+      {/* Next screen in flow: Stage 3 - AFTER */}
+      <AfterScreen />
 
       {/* Future content sections */}
       <div className="post-reveal-content" />
