@@ -1,5 +1,5 @@
 /* CinematicReveal.jsx — Unified hero: video landing + GTA VI scroll animation */
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useLayoutEffect, useState } from "react";
 import { Play, Pause, Volume2, VolumeX } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -50,7 +50,7 @@ export default function CinematicReveal() {
     if (landingVideoRef.current) landingVideoRef.current.pause();
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       // ── Scroll indicator bounce ─────────────────────────────────────────
       const indicator = containerRef.current.querySelector(".cr-scroll-indicator");
@@ -110,11 +110,11 @@ export default function CinematicReveal() {
       tl.to(".cr-logo-main", { opacity: 1, duration: 1.2 }, 0.8);
 
       // Simultaneously: scale 45→1 AND rise 50%→20% (pure GTA VI zoom-out)
-      // transformOrigin stays at second 'S' — pivot rises from viewport-center to top-20%
-      tl.fromTo(
+      // fromTo replaced with to() — reads from-state from gsap.set() above,
+      // which avoids a conflicting second "from" definition in the scrubbed timeline.
+      tl.to(
         ".cr-logo-main",
-        { scale: 45, top: "50%" },
-        { scale: 1,  top: "20%", duration: 2.5, ease: "power2.inOut" },
+        { scale: 1, top: "20%", left: "50%", xPercent: -50, yPercent: -50, duration: 2.5, ease: "power2.inOut" },
         1.3
       );
 

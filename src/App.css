@@ -379,18 +379,18 @@ body {
 
 /* ── Logo crossfade layers (Phases 1 → 3) ──────────────────────────────── */
 
-/* GSAP owns all transforms + opacity + filter. CSS only sets fallback opacity. */
+/* GSAP owns ALL position + transform + opacity. No CSS top/left here —
+   gsap.set() (via useLayoutEffect) fires before first paint and sets everything. */
 .cr-logo-main {
   position: absolute;
   width: 30vw;
   height: auto;
-  opacity: 0; /* fallback before GSAP initialises */
+  opacity: 0;
   pointer-events: none;
-  will-change: opacity; /* Removed transform and filter to prevent low-res rasterization */
+  will-change: opacity;
   z-index: 6;
 }
 
-/* oo-cut and master logo: GSAP sets all position/opacity */
 .cr-logo-oo-cut,
 .cr-logo-final {
   position: absolute;
